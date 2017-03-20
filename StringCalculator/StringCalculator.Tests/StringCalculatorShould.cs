@@ -11,9 +11,9 @@ namespace StringCalculator.Tests
         {
             var calculator = new Calculator();
 
-            int expectedSum = calculator.CalculateFromString("");
+            int result = calculator.CalculateFromString("");
 
-            Assert.AreEqual(expectedSum, 0);
+            Assert.AreEqual(0, result);
         }
 
         [Test]
@@ -22,9 +22,9 @@ namespace StringCalculator.Tests
         {
             var calculator = new Calculator();
 
-            int expectedSum = calculator.CalculateFromString("1");
+            int result = calculator.CalculateFromString("1");
 
-            Assert.AreEqual(expectedSum, 1);
+            Assert.AreEqual(1, result);
         }
 
         [Test]
@@ -33,9 +33,9 @@ namespace StringCalculator.Tests
         {
             var calculator = new Calculator();
 
-            int expectedSum = calculator.CalculateFromString("2");
+            int result = calculator.CalculateFromString("2");
 
-            Assert.AreEqual(expectedSum, 2);
+            Assert.AreEqual(2, result);
         }
 
         [Test]
@@ -43,9 +43,9 @@ namespace StringCalculator.Tests
         {
             var calculator = new Calculator();
 
-            int expectedSum = calculator.CalculateFromString("3");
+            int result = calculator.CalculateFromString("3");
 
-            Assert.AreEqual(expectedSum, 3);
+            Assert.AreEqual(3, result);
         }
 
         [TestCase("", 0)]
@@ -59,18 +59,39 @@ namespace StringCalculator.Tests
 
             Assert.AreEqual(expectedSum, result);
         }
-    }
 
-    public class Calculator     
-    {
-        public int CalculateFromString(string input)
+        [TestCase("1,2", 3)]
+        [TestCase("2,2", 4)]
+        [TestCase("200,245,3", 448)]
+        [TestCase("200\n245,3", 448)]
+        [TestCase("200\n245\n3", 448)]
+        public void ReturnSumWhenStringIsADelimitedListOfNumbers(string input, int expected)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return 0;
-            }
+            var calculator = new Calculator();
 
-            return int.Parse(input);
+            int result = calculator.CalculateFromString(input);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void ReturnThreeWithSpecifiedDelimiter()
+        {
+            var calculator = new Calculator();
+
+            int result = calculator.CalculateFromString("//;\n1;2");
+
+            Assert.AreEqual(3, result);
+        }
+
+        [Test]
+        public void ReturnFourWithSpecifiedDelimiter()
+        {
+            var calculator = new Calculator();
+
+            int result = calculator.CalculateFromString("//+\n2+2");
+
+            Assert.AreEqual(4, result);
         }
     }
 }
